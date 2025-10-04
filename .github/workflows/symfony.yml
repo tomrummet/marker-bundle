@@ -42,4 +42,4 @@ jobs:
       env:
         MARKER_DIRS_PAGES: vendor/tomrummet/marker-bundle/tests/Fixtures/content/pages/
         MARKER_DIRS_POSTS: vendor/tomrummet/marker-bundle/tests/Fixtures/content/posts/
-      run: ./bin/phpunit -c vendor/tomrummet/marker-bundle/phpunit.xml.dist
+      run: ./bin/phpunit -c vendor/tomrummet/marker-bundle/phpunit.dist.xml
