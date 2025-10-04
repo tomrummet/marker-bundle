@@ -1,0 +1,43 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Symfony
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  symfony-tests:
+    runs-on: ubuntu-latest
+    steps:
+    #  To automatically get bug fixes and new Php versions for shivammathur/setup-php,
+    # change this to (see https://github.com/shivammathur/setup-php#bookmark-versioning):
+    # uses: shivammathur/setup-php@v2
+    - uses: shivammathur/setup-php@2cb9b829437ee246e9b3cac53555a39208ca6d28
+      with:
+        php-version: '8.0'
+    - name: Install Symfony project
+      run: composer create-project symfony/skeleton marker-bunde-test
+    - name: Require marker-bundle
+      run: composer require tomrummet/marker-bundle:@dev
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+    - name: Execute tests (Unit and Feature tests) via PHPUnit
+      env:
+        MARKER_DIRS_PAGES: vendor/tomrummet/marker-bundle/tests/Fixtures/content/pages/
+        MARKER_DIRS_POSTS: vendor/tomrummet/marker-bundle/tests/Fixtures/content/posts/
+      run: vendor/bin/phpunit -c vendor/tomrummet/marker-bundle/phpunit.xml.dist
