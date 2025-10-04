@@ -29,7 +29,7 @@ jobs:
     - name: Change dir
       run: cd marker-bundle-test
     - name: Require marker-bundle
-      run: composer require tomrummet/marker-bundle:@dev
+      run: composer require tomrummet/marker-bundle:@dev --with-dev-dependencies
     - name: Cache Composer packages
       id: composer-cache
       uses: actions/cache@v3
